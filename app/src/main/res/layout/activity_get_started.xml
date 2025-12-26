@@ -52,6 +52,7 @@
             android:orientation="horizontal"
             >
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/loginBtn"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:text="Login"
@@ -71,6 +72,7 @@
                 />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/signupBtn"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:text="Sign up"

@@ -1,5 +1,6 @@
 package com.abdullah.shelf;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-
+        Intent i = new Intent(MainActivity.this, get_started_activity.class);
+        startActivity(i);
     }
 }

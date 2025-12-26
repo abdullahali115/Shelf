@@ -1,7 +1,9 @@
 package com.abdullah.shelf;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,9 @@ public class accounts_activity extends AppCompatActivity {
     FragmentManager manager;
     FragmentTransaction transactor;
     TabLayout tabs;
+    Intent i;
+
+    TextView topHeader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,21 @@ public class accounts_activity extends AppCompatActivity {
         manager = getSupportFragmentManager();
         transactor = manager.beginTransaction();
         tabs = findViewById(R.id.accountsTab);
+        topHeader = findViewById(R.id.topHeader);
+
+        //select tab
+        i = getIntent();
+        int tabNo = i.getIntExtra("key", 0);
+        TabLayout.Tab tab = tabs.getTabAt(tabNo);
+        if(tab != null)
+        {
+            tab.select();
+            if(tabNo == 1)
+                topHeader.setText("Sign Up");
+            else
+                topHeader.setText("Login");
+        }
+
         transactor.replace(R.id.mainFrame, frag);
         transactor.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transactor.commit();
@@ -44,11 +64,13 @@ public class accounts_activity extends AppCompatActivity {
                     case 0:
                     {
                         frag = new login_fragment();
+                        topHeader.setText("Login");
                         break;
                     }
                     case 1:
                     {
                         frag = new signup_fragment();
+                        topHeader.setText("Sign Up");
                         break;
                     }
                 }
