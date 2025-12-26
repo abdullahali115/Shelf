@@ -33,7 +33,6 @@ public class accounts_activity extends AppCompatActivity {
         setContentView(R.layout.activity_accounts);
 
         mainFrame = findViewById(R.id.mainFrame);
-        frag = new login_fragment();
         manager = getSupportFragmentManager();
         transactor = manager.beginTransaction();
         tabs = findViewById(R.id.accountsTab);
@@ -46,10 +45,14 @@ public class accounts_activity extends AppCompatActivity {
         if(tab != null)
         {
             tab.select();
-            if(tabNo == 1)
+            if(tabNo == 1) {
                 topHeader.setText("Sign Up");
-            else
+                frag = new signup_fragment();
+            }
+            else {
                 topHeader.setText("Login");
+                frag = new login_fragment();
+            }
         }
 
         transactor.replace(R.id.mainFrame, frag);

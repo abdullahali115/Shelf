@@ -36,32 +36,32 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 />
-            <TextView
-                android:id="@+id/emailHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Email Address"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@id/email_ic"
-                app:layout_constraintTop_toTopOf="@id/email_ic"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="15dp"
-                />
-                <EditText
-                    android:id="@+id/emailText"
+                <com.google.android.material.textfield.TextInputLayout
+                    app:layout_constraintStart_toEndOf="@id/email_ic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginEnd="20dp"
                     android:scrollHorizontally="true"
-                    android:inputType="textEmailAddress"
-                    android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@id/emailHeader"
-                    app:layout_constraintStart_toEndOf="@id/email_ic"
-                app:layout_constraintEnd_toEndOf="parent"
                     android:background="@android:color/transparent"
-                    />
+                    app:boxStrokeWidth="0dp"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:hintTextColor="@color/textPrimary"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email"
+                        android:textColorHint="@color/textPrimary"
+                        android:textColor="@color/textPrimary"
+                        android:inputType="textEmailAddress"
+                        android:background="@android:color/transparent"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -88,32 +88,32 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     />
-                <TextView
-                    android:id="@+id/passwordHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:textSize="10sp"
+                <com.google.android.material.textfield.TextInputLayout
                     app:layout_constraintStart_toEndOf="@id/password_ic"
-                    app:layout_constraintTop_toTopOf="@id/password_ic"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="15dp"
-                    />
-                <EditText
-                    android:id="@+id/passwordText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="20dp"
                     android:scrollHorizontally="true"
-                    android:inputType="textPassword"
-                    android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@id/passwordHeader"
-                    app:layout_constraintStart_toEndOf="@id/password_ic"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:background="@android:color/transparent"
-                    />
+                    app:boxStrokeWidth="0dp"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:hintTextColor="@color/textPrimary"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Password"
+                        android:textColorHint="@color/textPrimary"
+                        android:textColor="@color/textPrimary"
+                        android:inputType="textEmailAddress"
+                        android:background="@android:color/transparent"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -219,5 +219,7 @@
             app:rippleColor="@android:color/darker_gray"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </FrameLayout>
