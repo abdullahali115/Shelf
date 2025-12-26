@@ -69,6 +69,7 @@
                     app:cardBackgroundColor="@color/primary"
                     >
                     <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/accountsTab"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -94,20 +95,11 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <FrameLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/mainFrame"
                     android:layout_width="match_parent"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_height="400dp">
-
-                    <fragment
-                        android:id="@+id/test_fragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:name="com.abdullah.shelf.login_fragment"
-                        tools:layout="@layout/fragment_login_fragment" />
-
                 </FrameLayout>
             </LinearLayout>
 
