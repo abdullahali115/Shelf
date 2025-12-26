@@ -2,25 +2,23 @@ package com.abdullah.shelf;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link login_fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+
 public class login_fragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -28,15 +26,6 @@ public class login_fragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment login_fragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static login_fragment newInstance(String param1, String param2) {
         login_fragment fragment = new login_fragment();
         Bundle args = new Bundle();
@@ -60,5 +49,43 @@ public class login_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login_fragment, container, false);
+    }
+
+    Firebase_Helper firebase;
+    MaterialButton loginBtn;
+    TextInputEditText email, password;
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        loginBtn = view.findViewById(R.id.loginButton);
+        firebase = new Firebase_Helper();
+        email = view.findViewById(R.id.loginEmailText);
+        password = view.findViewById(R.id.loginPasswordText);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String e = email.getText().toString();
+                String p = password.getText().toString();
+                if(!e.isEmpty() && !p.isEmpty()) {
+                    firebase.loginUser(e, p, new Firebase_Helper.FirebaseCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+                            Toast.makeText(requireContext(), "Error! " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else
+                {
+                    Toast.makeText(requireContext(), "Please fill out all the fields", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

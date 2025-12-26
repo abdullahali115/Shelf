@@ -53,6 +53,7 @@
                     app:hintTextColor="@color/textPrimary"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/loginEmailText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Email"
@@ -105,6 +106,7 @@
                     app:hintTextColor="@color/textPrimary"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/loginPasswordText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Password"
