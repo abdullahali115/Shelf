@@ -1,6 +1,7 @@
 package com.abdullah.shelf;
 
 import android.app.DatePickerDialog;
+import android.credentials.CredentialManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -65,9 +66,9 @@ public class signup_fragment extends Fragment {
     MaterialTextView dobText;
     ImageView dobBtn;
     FirebaseAuth mAuth;
-
     Firebase_Helper firebase;
     MaterialButton signupBtn;
+    MaterialButton googleSignIn;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -79,6 +80,7 @@ public class signup_fragment extends Fragment {
         dobBtn = view.findViewById(R.id.dob_ic);
         mAuth = FirebaseAuth.getInstance();
         signupBtn = view.findViewById(R.id.signupBtn);
+        googleSignIn = view.findViewById(R.id.gSignIn);
         firebase = new Firebase_Helper();
 
         dobBtn.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +128,23 @@ public class signup_fragment extends Fragment {
                         });
                     }
                 }
+            }
+        });
+
+        googleSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebase.signInWithGoogle(requireContext(), new Firebase_Helper.FirebaseCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(requireContext(), "User Registered Successfully", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Toast.makeText(requireContext(), "Error! " + error, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
