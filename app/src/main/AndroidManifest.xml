@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shelf">
         <activity
+            android:name=".settingspage"
+            android:exported="false" />
+        <activity
+            android:name=".homepage"
+            android:exported="false" />
+        <activity
             android:name=".accounts_activity"
             android:exported="false" />
         <activity

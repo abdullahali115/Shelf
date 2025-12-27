@@ -1,5 +1,6 @@
 package com.abdullah.shelf;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -73,6 +74,9 @@ public class login_fragment extends Fragment {
                         @Override
                         public void onSuccess() {
                             Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(requireContext(), homepage.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
                         }
 
                         @Override

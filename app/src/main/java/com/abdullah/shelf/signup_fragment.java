@@ -1,6 +1,7 @@
 package com.abdullah.shelf;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.credentials.CredentialManager;
 import android.os.Bundle;
 
@@ -119,6 +120,9 @@ public class signup_fragment extends Fragment {
                             @Override
                             public void onSuccess() {
                                 Toast.makeText(requireContext(), "User Registered Successfully", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(requireContext(), homepage.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(i);
                             }
 
                             @Override
@@ -138,6 +142,9 @@ public class signup_fragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(requireContext(), "User Registered Successfully", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(requireContext(), homepage.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
                     }
 
                     @Override

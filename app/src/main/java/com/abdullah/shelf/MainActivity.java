@@ -9,6 +9,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -17,8 +20,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+    }
 
-        Intent i = new Intent(MainActivity.this, get_started_activity.class);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        Intent i;
+        if(currentUser != null)
+            i = new Intent(MainActivity.this, homepage.class);
+        else
+            i = new Intent(MainActivity.this, get_started_activity.class);
         startActivity(i);
     }
 }
