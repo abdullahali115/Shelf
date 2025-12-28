@@ -1,7 +1,9 @@
 package com.abdullah.shelf;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 // 2. CREDENTIAL MANAGER IMPORTS
 import androidx.credentials.Credential;
@@ -22,20 +24,31 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 // 5. JAVA UTILS
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Executors;
 public class Firebase_Helper {
     private final FirebaseAuth auth;
     private final DatabaseReference ref;
+
+    private final FirebaseFirestore db;
     public Firebase_Helper(){
         auth = FirebaseAuth.getInstance();
         ref = FirebaseDatabase.getInstance("https://shelf-d4ce9-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users");
+        db = FirebaseFirestore.getInstance();
     }
     public interface FirebaseCallback {
         void onSuccess();
         void onFailure(String error);
+    }
+
+    public interface  FirestoreCallBack{
+        void onCallBack(List<Book> books);
     }
 
     public void registerUser(String email, String username, String password, String dob, FirebaseCallback call)
@@ -175,6 +188,49 @@ public class Firebase_Helper {
             }
         });
     }
+
+    // store data of books
+    public void storeBookData(String uid, String bookid, String name, String author, String isbn, String year, FirebaseCallback call)
+    {
+            HashMap<String, String> values = new HashMap<>();
+            values.put("uid", uid);
+            values.put("name", name);
+            values.put("author", author);
+            values.put("isbn", isbn);
+            values.put("year", year);
+            db.collection("books").document(bookid).set(values).addOnSuccessListener(s -> {
+                call.onSuccess();
+            }).addOnFailureListener(e -> {
+                call.onFailure("Error uploading Book Data");
+            });
+    }
+
+    // retrieve data of books
+    public void getBookData(String uid, FirestoreCallBack call)
+    {
+        List<Book> books = new ArrayList<>();
+        db.collection("books").whereEqualTo("uid", uid).get().addOnCompleteListener(
+                task -> {
+                    if(task.isSuccessful())
+                    {
+                        for(QueryDocumentSnapshot document : task.getResult())
+                        {
+                            String name = document.getString("name");
+                            String isbn = document.getString("isbn");
+                            String author = document.getString("author");
+                            String year = document.getString("year");
+
+                            Book b = new Book(name, author, isbn, year);
+
+                            books.add(b);
+                        }
+                    }
+                    call.onCallBack(books);
+                }
+        );
+    }
+
+
 
 
 }
