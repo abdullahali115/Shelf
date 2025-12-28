@@ -1,5 +1,6 @@
 package com.abdullah.shelf;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +18,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import kotlin.experimental.BitwiseOperationsKt;
+
 
 public class view_book extends Fragment {
 
@@ -58,11 +65,17 @@ public class view_book extends Fragment {
     }
 
     RecyclerView booksRecycler;
-    List<Book> bookList;
     BookAdapter adapter;
     Firebase_Helper firebase;
 
     FirebaseAuth auth;
+
+    Boolean reloadCheck;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+
+    Gson gson;
+    String booksJson;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -71,22 +84,49 @@ public class view_book extends Fragment {
         firebase = new Firebase_Helper();
         auth = FirebaseAuth.getInstance();
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        editor = prefs.edit();
+
+        gson = new Gson();
+        booksJson = "";
+
         booksRecycler = view.findViewById(R.id.booksRView);
         LinearLayoutManager manager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
         booksRecycler.setLayoutManager(manager);
         PagerSnapHelper snapper = new PagerSnapHelper();
         snapper.attachToRecyclerView(booksRecycler);
 
+        reloadCheck = prefs.getBoolean("check", true);
 
-        firebase.getBookData(auth.getCurrentUser().getUid().toString(), new Firebase_Helper.FirestoreCallBack() {
-            @Override
-            public void onCallBack(List<Book> books) {
-                adapter = new BookAdapter(books);
-                booksRecycler.setAdapter(adapter);
-                Log.d("length of books", Integer.toString(books.size()));
-                Log.d("User ID", auth.getCurrentUser().getUid().toString());
+        if(reloadCheck) {
+            firebase.getBookData(auth.getCurrentUser().getUid().toString(), new Firebase_Helper.FirestoreCallBack() {
+                @Override
+                public void onCallBack(List<Book> books) {
+                    booksJson = gson.toJson(books);
+                    adapter = new BookAdapter(books);
+                    booksRecycler.setAdapter(adapter);
+                    editor.putBoolean("check", false);
+                    editor.putString("books_data", booksJson);
+                    editor.apply();
+                    reloadCheck = false;
+                }
+            });
+        }
+        else
+        {
+            List<Book> myBooks;
+            booksJson = prefs.getString("books_data", "");
+            if(!booksJson.isEmpty()) {
+                Book[] books = gson.fromJson(booksJson, Book[].class);
+                myBooks = new ArrayList<>(Arrays.asList(books));
             }
-        });
+            else
+            {
+                myBooks = new ArrayList<>();
+            }
+            adapter = new BookAdapter(myBooks);
+            booksRecycler.setAdapter(adapter);
+        }
 
 
 

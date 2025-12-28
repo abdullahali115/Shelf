@@ -1,7 +1,9 @@
 package com.abdullah.shelf;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -28,6 +30,9 @@ public class homepage extends AppCompatActivity {
     FragmentTransaction transactor;
     TextView homeHeader;
     TabLayout tabs;
+
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +46,11 @@ public class homepage extends AppCompatActivity {
         frag = new view_book();
         manager = getSupportFragmentManager();
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = prefs.edit();
 
+        editor.putBoolean("check", true);
+        editor.apply();
 
         transactor = manager.beginTransaction();
         transactor.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

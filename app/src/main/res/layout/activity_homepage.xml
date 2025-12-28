@@ -24,7 +24,7 @@
         android:id="@+id/gearBtn"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:layout_width="30dp"
         android:layout_height="30dp"

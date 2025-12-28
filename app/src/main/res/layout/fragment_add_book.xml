@@ -69,7 +69,6 @@
                             android:hint="Book Name"
                             android:textColorHint="@color/textPrimary"
                             android:textColor="@color/textPrimary"
-                            android:inputType="textEmailAddress"
                             android:background="@android:color/transparent"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -123,7 +122,6 @@
                             android:hint="ISBN"
                             android:textColorHint="@color/textPrimary"
                             android:textColor="@color/textPrimary"
-                            android:inputType="textPassword"
                             android:background="@android:color/transparent"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -177,7 +175,7 @@
                             android:hint="Author"
                             android:textColorHint="@color/textPrimary"
                             android:textColor="@color/textPrimary"
-                            android:inputType="textPassword"
+                            android:inputType="textPersonName"
                             android:background="@android:color/transparent"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -231,7 +229,7 @@
                             android:hint="Publication Year"
                             android:textColorHint="@color/textPrimary"
                             android:textColor="@color/textPrimary"
-                            android:inputType="textPassword"
+                            android:inputType="text|number"
                             android:background="@android:color/transparent"
                             />
                     </com.google.android.material.textfield.TextInputLayout>

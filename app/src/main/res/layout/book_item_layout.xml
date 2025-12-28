@@ -4,7 +4,7 @@
     app:strokeWidth="1.5dp"
     app:strokeColor="@color/secondary"
     android:background="@color/primary"
-    android:layout_marginHorizontal="20dp"
+    android:layout_marginHorizontal="22dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 

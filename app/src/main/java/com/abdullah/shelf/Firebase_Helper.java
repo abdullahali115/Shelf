@@ -1,5 +1,6 @@
 package com.abdullah.shelf;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,12 +21,17 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 
 // 4. FIREBASE IMPORTS
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 // 5. JAVA UTILS
 import java.util.ArrayList;
@@ -104,6 +110,10 @@ public class Firebase_Helper {
         });
     }
 
+    public void logout()
+    {
+        auth.signOut();
+    }
     //Sign up or Login With Google Section
     public void signInWithGoogle(Context context, FirebaseCallback call) {
         GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
@@ -229,6 +239,74 @@ public class Firebase_Helper {
                 }
         );
     }
+
+    // delete account
+    public void deleteUser(String password, FirebaseCallback call) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+        String email = user.getEmail();
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        user.reauthenticate(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                deleteUserBooks(user.getUid(), new FirebaseCallback() {
+                    @Override
+                    public void onSuccess() {
+                        deleteUserDetails(user.getUid(), new FirebaseCallback() {
+                            @Override
+                            public void onSuccess() {
+                                user.delete().addOnCompleteListener(task2 -> {
+                                    if (task2.isSuccessful()) {
+                                        call.onSuccess();
+                                    } else {
+                                        call.onFailure("Failed to delete Auth user");
+                                    }
+                                });
+                            }
+                            @Override
+                            public void onFailure(String error) {
+                                call.onFailure(error);
+                            }
+                        });
+                    }
+                    @Override
+                    public void onFailure(String error) {
+                        call.onFailure(error);
+                    }
+                });
+            } else {
+                call.onFailure("Wrong Password");
+            }
+        });
+    }
+    public void deleteUserBooks(String uid, FirebaseCallback call) {
+        db.collection("books").whereEqualTo("uid", uid).get()
+                .addOnSuccessListener(querySnapshot -> {
+                    WriteBatch batch = db.batch();
+                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                        batch.delete(document.getReference());
+                    }
+                    batch.commit().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            call.onSuccess();
+                        } else {
+                            call.onFailure("Failed to delete books");
+                        }
+                    });
+                }).addOnFailureListener(e -> call.onFailure("Failed to get books"));
+    }
+    public void deleteUserDetails(String uid, FirebaseCallback call) {
+        ref.child(uid).removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                call.onSuccess();
+            } else {
+                call.onFailure("Failed to delete user details");
+            }
+        });
+    }
+
+
+
+
 
 
 
