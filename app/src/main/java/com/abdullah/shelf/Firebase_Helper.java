@@ -200,26 +200,29 @@ public class Firebase_Helper {
     }
 
     // store data of books
-    public void storeBookData(String uid, String bookid, String name, String author, String isbn, String year, FirebaseCallback call)
-    {
-            HashMap<String, String> values = new HashMap<>();
-            values.put("uid", uid);
-            values.put("name", name);
-            values.put("author", author);
-            values.put("isbn", isbn);
-            values.put("year", year);
-            db.collection("books").document(bookid).set(values).addOnSuccessListener(s -> {
-                call.onSuccess();
-            }).addOnFailureListener(e -> {
-                call.onFailure("Error uploading Book Data");
-            });
+    public void storeBookData(String uid, String name, String author, String isbn, String year, FirebaseCallback call) {
+        if (uid == null || uid.isEmpty() || isbn == null || isbn.isEmpty()) {
+            call.onFailure("UID or ISBN is empty!");
+            return;
+        }
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("name", name);
+        values.put("author", author);
+        values.put("isbn", isbn);
+        values.put("year", year);
+
+        db.collection("books").document(uid).collection("user_books").document(isbn).set(values).addOnSuccessListener(s -> call.onSuccess())
+                .addOnFailureListener(e -> {
+                    Log.d("FirestoreError", "Upload failed", e);
+                    call.onFailure("Error: " + e.getMessage());
+                });
     }
 
     // retrieve data of books
     public void getBookData(String uid, FirestoreCallBack call)
     {
         List<Book> books = new ArrayList<>();
-        db.collection("books").whereEqualTo("uid", uid).get().addOnCompleteListener(
+        db.collection("books").document(uid).collection("user_books").get().addOnCompleteListener(
                 task -> {
                     if(task.isSuccessful())
                     {
@@ -240,6 +243,13 @@ public class Firebase_Helper {
         );
     }
 
+    public void deleteBook(String isbn, FirebaseCallback call)
+    {
+        String uid = auth.getCurrentUser().getUid();
+        db.collection("books").document(uid).collection("user_books").document(isbn).delete().addOnSuccessListener(a ->{
+            call.onSuccess();
+        }).addOnFailureListener(e -> call.onFailure(e.getMessage().toString()));
+    }
     // delete account
     public void deleteUser(String password, FirebaseCallback call) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -279,8 +289,8 @@ public class Firebase_Helper {
         });
     }
     public void deleteUserBooks(String uid, FirebaseCallback call) {
-        db.collection("books").whereEqualTo("uid", uid).get()
-                .addOnSuccessListener(querySnapshot -> {
+        db.collection("books")
+                .document(uid).collection("user_books").get().addOnSuccessListener(querySnapshot -> {
                     WriteBatch batch = db.batch();
                     for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                         batch.delete(document.getReference());
@@ -303,12 +313,4 @@ public class Firebase_Helper {
             }
         });
     }
-
-
-
-
-
-
-
-
 }

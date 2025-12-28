@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -74,6 +77,9 @@ public class view_book extends Fragment {
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
+    FragmentManager manager;
+    FragmentTransaction transactor;
+    Fragment frag;
     Gson gson;
     String booksJson;
 
@@ -103,8 +109,7 @@ public class view_book extends Fragment {
                 @Override
                 public void onCallBack(List<Book> books) {
                     booksJson = gson.toJson(books);
-                    adapter = new BookAdapter(books);
-                    booksRecycler.setAdapter(adapter);
+                    adapterHelper(books);
                     editor.putBoolean("check", false);
                     editor.putString("books_data", booksJson);
                     editor.apply();
@@ -124,12 +129,47 @@ public class view_book extends Fragment {
             {
                 myBooks = new ArrayList<>();
             }
-            adapter = new BookAdapter(myBooks);
+            adapterHelper(myBooks);
             booksRecycler.setAdapter(adapter);
         }
 
+    }
+    public void adapterHelper(List<Book> books)
+    {
+        adapter = new BookAdapter(books, new BookAdapter.OnItemClickListener() {
+            @Override
+            public void onDeleteClick(int position) {
+                Book toDel = books.get(position);
+                String isbn = toDel.getISBN();
+                firebase.deleteBook(isbn, new Firebase_Helper.FirebaseCallback() {
+                    @Override
+                    public void onSuccess() {
+                        books.remove(position);
+                        adapter.notifyItemRemoved(position);
+                        adapter.notifyItemRangeChanged(position, books.size());
+                        String newJson = gson.toJson(books);
+                        editor.putString("books_data", newJson);
+                        editor.apply();
+                        Toast.makeText(requireContext(), "Book deleted Successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onFailure(String error) {
+                        Toast.makeText(requireContext(), "Book deleted Successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
-
-
+            @Override
+            public void onEditClick(int position) {
+                manager = getParentFragmentManager();
+                transactor = manager.beginTransaction();
+                frag = add_book.newInstance(books.get(position));
+                transactor.replace(R.id.homeFrame, frag);
+                transactor.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transactor.addToBackStack(null);
+                transactor.commit();
+            }
+        });
+        booksRecycler.setAdapter(adapter);
     }
 }

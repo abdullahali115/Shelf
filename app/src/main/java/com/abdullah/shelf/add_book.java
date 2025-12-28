@@ -3,6 +3,7 @@ package com.abdullah.shelf;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,8 +12,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.preference.PreferenceManager;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,15 +29,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 
 public class add_book extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
+    private static final String ARG_PARAM1 = "book_data";
+    Book bookToEdit = null;
     private String mParam1;
-    private String mParam2;
 
     TextInputEditText name, isbn, author, pubYear;
     MaterialButton submit;
@@ -43,11 +44,14 @@ public class add_book extends Fragment {
         // Required empty public constructor
     }
 
-    public static add_book newInstance(String param1, String param2) {
+    public static add_book newInstance(Book book) {
         add_book fragment = new add_book();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        if(book != null)
+        {
+            String bookToJson = new Gson().toJson(book);
+            args.putString(ARG_PARAM1, bookToJson);
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,9 +59,9 @@ public class add_book extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        if (getArguments() != null && getArguments().containsKey(ARG_PARAM1)) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            bookToEdit = new Gson().fromJson(mParam1, Book.class);
         }
     }
 
@@ -85,6 +89,17 @@ public class add_book extends Fragment {
         auth = FirebaseAuth.getInstance();
         firebase = new Firebase_Helper();
 
+        if(bookToEdit != null)
+        {
+            name.setText(bookToEdit.getName().toString());
+            isbn.setText(bookToEdit.getISBN().toString());
+            author.setText(bookToEdit.getAuthor().toString());
+            pubYear.setText(bookToEdit.getPubYear().toString());
+            submit.setText("Save");
+            isbn.setEnabled(false);
+            isbn.setTextColor(Color.GRAY);
+        }
+
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         editor = prefs.edit();
 
@@ -103,9 +118,10 @@ public class add_book extends Fragment {
                     Toast.makeText(requireContext(), "Please fill out all the fields!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                firebase.storeBookData(uid, bookid, n, a, i, y, new Firebase_Helper.FirebaseCallback() {
+                firebase.storeBookData(uid, n, a, i, y, new Firebase_Helper.FirebaseCallback() {
                     @Override
                     public void onSuccess() {
+                        getParentFragmentManager().beginTransaction().replace(R.id.homeFrame, new view_book()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                         Toast.makeText(requireContext(), "Upload Successful", Toast.LENGTH_SHORT).show();
                         editor.putBoolean("check", true);
                         editor.apply();
