@@ -70,9 +70,9 @@
                         android:layout_height="wrap_content"
                         android:text="By Lorem"
                         android:gravity="center"
-                        android:fontFamily="@font/pacifico"
+                        android:fontFamily="@font/mono_signature"
                         android:textColor="@color/textSecondary"
-                        android:textSize="14sp"
+                        android:textSize="10sp"
                         />
                     <TextView
                         android:id="@+id/bookISBN"
@@ -94,7 +94,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:rotationX="30"
+                        android:rotationX="32"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"
                         android:text="Publication Year: 1234"

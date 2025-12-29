@@ -26,9 +26,11 @@
             android:layout_height="wrap_content"
             android:text="Get Started!"
             android:layout_marginTop="60dp"
+            android:textColor="@color/textPrimary"
             android:layout_marginStart="25dp"
             android:textSize="25sp"
-            android:fontFamily="casual"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/sriracha"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,6 +41,9 @@
             android:text="Keep all your books in one place"
             android:layout_marginStart="25dp"
             android:textSize="15sp"
+            android:textStyle="italic"
+            android:includeFontPadding="false"
+            android:textColor="@color/textPrimary"
             android:fontFamily="casual"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/getStarted" />

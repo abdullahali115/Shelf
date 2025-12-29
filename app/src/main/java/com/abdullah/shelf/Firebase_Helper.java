@@ -309,7 +309,7 @@ public class Firebase_Helper {
                     }
                 });
             } else {
-                call.onFailure("Wrong Password");
+                call.onFailure("Wrong Password or Connection Error");
             }
         });
     }
