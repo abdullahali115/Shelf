@@ -77,6 +77,7 @@ public class add_book extends Fragment {
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+    boolean check = false;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -98,6 +99,7 @@ public class add_book extends Fragment {
             submit.setText("Save");
             isbn.setEnabled(false);
             isbn.setTextColor(Color.GRAY);
+            check = true;
         }
 
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
@@ -118,7 +120,7 @@ public class add_book extends Fragment {
                     Toast.makeText(requireContext(), "Please fill out all the fields!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                firebase.storeBookData(uid, n, a, i, y, new Firebase_Helper.FirebaseCallback() {
+                firebase.storeBookData(uid, n, a, i, y, check, new Firebase_Helper.FirebaseCallback() {
                     @Override
                     public void onSuccess() {
                         getParentFragmentManager().beginTransaction().replace(R.id.homeFrame, new view_book()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
@@ -129,7 +131,7 @@ public class add_book extends Fragment {
 
                     @Override
                     public void onFailure(String error) {
-                        Toast.makeText(requireContext(), "Error!" + error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
                     }
                 });
             }

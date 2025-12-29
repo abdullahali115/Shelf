@@ -97,7 +97,7 @@ public class settingspage extends AppCompatActivity {
 
                                     @Override
                                     public void onFailure(String error) {
-                                        Toast.makeText(getApplicationContext(), "Error! "+error, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }

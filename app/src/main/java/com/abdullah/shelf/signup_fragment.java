@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.Firebase;
@@ -65,7 +66,7 @@ public class signup_fragment extends Fragment {
 
     TextInputEditText email, password, username;
     MaterialTextView dobText;
-    ImageView dobBtn;
+    MaterialCardView dobBtn;
     FirebaseAuth mAuth;
     Firebase_Helper firebase;
     MaterialButton signupBtn;
@@ -77,7 +78,7 @@ public class signup_fragment extends Fragment {
         password = view.findViewById(R.id.passwordText);
         username = view.findViewById(R.id.usernameText);
         dobText = view.findViewById(R.id.dobText);
-        dobBtn = view.findViewById(R.id.dob_ic);
+        dobBtn = view.findViewById(R.id.dobCard);
         mAuth = FirebaseAuth.getInstance();
         signupBtn = view.findViewById(R.id.signupBtn);
         firebase = new Firebase_Helper();
@@ -125,7 +126,7 @@ public class signup_fragment extends Fragment {
 
                             @Override
                             public void onFailure(String error) {
-                                Toast.makeText(requireContext(), "Error! " + error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

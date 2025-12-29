@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -200,7 +201,7 @@ public class Firebase_Helper {
     }
 
     // store data of books
-    public void storeBookData(String uid, String name, String author, String isbn, String year, FirebaseCallback call) {
+    public void storeBookData(String uid, String name, String author, String isbn, String year, Boolean check, FirebaseCallback call) {
         if (uid == null || uid.isEmpty() || isbn == null || isbn.isEmpty()) {
             call.onFailure("UID or ISBN is empty!");
             return;
@@ -211,12 +212,36 @@ public class Firebase_Helper {
         values.put("isbn", isbn);
         values.put("year", year);
 
-        db.collection("books").document(uid).collection("user_books").document(isbn).set(values).addOnSuccessListener(s -> call.onSuccess())
+        DocumentReference ref = db.collection("books").document(uid).collection("user_books").document(isbn);
+        if(check)
+        {
+            uploadBook(ref, values, call);
+        }
+        else
+        {
+            ref.get().addOnSuccessListener(snapShot -> {
+               if(snapShot.exists())
+               {
+                   call.onFailure("Book already exists with the same ISBN");
+               }
+               else
+               {
+                   uploadBook(ref, values, call);
+               }
+            });
+        }
+
+    }
+
+    public void uploadBook(DocumentReference ref, HashMap<String, Object> map, FirebaseCallback call)
+    {
+        ref.set(map).addOnSuccessListener(s -> call.onSuccess())
                 .addOnFailureListener(e -> {
                     Log.d("FirestoreError", "Upload failed", e);
                     call.onFailure("Error: " + e.getMessage());
                 });
     }
+
 
     // retrieve data of books
     public void getBookData(String uid, FirestoreCallBack call)

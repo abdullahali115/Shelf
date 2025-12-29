@@ -42,7 +42,7 @@
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/ic_email"
+                        android:src="@drawable/ic_book"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         />
@@ -96,7 +96,7 @@
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/ic_email"
+                        android:src="@drawable/ic_bar_code"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         />
@@ -150,7 +150,7 @@
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/ic_email"
+                        android:src="@drawable/ic_author"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         />

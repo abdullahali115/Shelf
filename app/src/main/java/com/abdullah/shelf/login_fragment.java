@@ -90,7 +90,7 @@ public class login_fragment extends Fragment {
 
                         @Override
                         public void onFailure(String error) {
-                            Toast.makeText(requireContext(), "Error! " + error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
