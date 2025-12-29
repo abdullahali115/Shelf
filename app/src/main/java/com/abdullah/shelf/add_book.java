@@ -92,9 +92,9 @@ public class add_book extends Fragment {
         if(bookToEdit != null)
         {
             name.setText(bookToEdit.getName().toString());
-            isbn.setText(bookToEdit.getISBN().toString());
+            isbn.setText(bookToEdit.getISBN().toString().substring(6));
             author.setText(bookToEdit.getAuthor().toString());
-            pubYear.setText(bookToEdit.getPubYear().toString());
+            pubYear.setText(bookToEdit.getPubYear().toString().substring(11));
             submit.setText("Save");
             isbn.setEnabled(false);
             isbn.setTextColor(Color.GRAY);

@@ -132,7 +132,6 @@ public class view_book extends Fragment {
             adapterHelper(myBooks);
             booksRecycler.setAdapter(adapter);
         }
-
     }
     public void adapterHelper(List<Book> books)
     {

@@ -7,13 +7,19 @@
         android:id="@+id/mainCardView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="390dp"
+        android:layout_width="260dp"
         app:cardCornerRadius="40dp"
-        app:strokeWidth="1.5dp"
+        app:strokeWidth="0dp"
         app:strokeColor="@color/secondary"
         android:background="@color/primary"
-        android:layout_marginHorizontal="22dp">
+        android:layout_marginHorizontal="35dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/book"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,18 +30,19 @@
                 android:layout_width="180dp"
                 android:layout_height="270dp"
                 app:cardCornerRadius="24dp"
-                app:strokeWidth="1.5dp"
-                app:strokeColor="@color/secondary"
                 app:cardElevation="0dp"
+                app:strokeWidth="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="28dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@android:color/transparent"
                 >
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    >
                     <TextView
                         android:id="@+id/bookTitle"
                         app:layout_constraintTop_toTopOf="parent"
@@ -43,50 +50,60 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
                         android:text="Lorem Ipsum"
+                        android:rotationX="40"
                         android:gravity="center|top"
                         android:layout_marginTop="60dp"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:fontFamily="casual"
+                        android:textSize="20sp"
+                        android:textColor="@color/textSecondary"
+                        android:fontFamily="@font/pacifico"
                         />
 
-                    <TextView
-                        android:id="@+id/bookISBN"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/bookAuthor"
-                        android:layout_marginTop="4dp"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:text="ISBN: 123456"
-                        android:gravity="center"
-                        android:textSize="14sp"
-                        />
+
                     <TextView
                         android:id="@+id/bookAuthor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/bookPubYear"
-                        android:layout_marginTop="4dp"
+                        app:layout_constraintTop_toBottomOf="@+id/bookTitle"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"
-                        android:text="Author: Lorem"
+                        android:text="By Lorem"
                         android:gravity="center"
+                        android:fontFamily="@font/pacifico"
+                        android:textColor="@color/textSecondary"
                         android:textSize="14sp"
+                        />
+                    <TextView
+                        android:id="@+id/bookISBN"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/bookPubYear"
+                        android:rotationX="33"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:text="ISBN: 123456"
+                        android:layout_marginStart="4dp"
+                        android:textColor="@color/textSecondary"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textSize="10sp"
                         />
                     <TextView
                         android:id="@+id/bookPubYear"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginTop="4dp"
+                        android:rotationX="30"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"
                         android:text="Publication Year: 1234"
+                        android:layout_marginStart="4dp"
+                        android:textColor="@color/textSecondary"
+                        android:textStyle="bold"
                         android:gravity="center"
-                        android:textSize="14sp"
-                        android:paddingBottom="15dp"
+                        android:textSize="11sp"
+                        android:paddingBottom="8dp"
                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -111,7 +128,7 @@
         android:paddingVertical="12dp"
         app:cardCornerRadius="24dp"
         android:backgroundTint="@android:color/transparent"
-        app:strokeColor="@color/lightGray"
+        app:strokeColor="@color/textPrimary"
         app:strokeWidth="1dp"
         android:clickable="true"
         >
@@ -119,7 +136,7 @@
             android:layout_width="56dp"
             android:layout_height="30dp"
             android:paddingVertical="4dp"
-            android:src="@drawable/ic_delete"
+            android:src="@drawable/ic_book_edit"
             />
     </com.google.android.material.card.MaterialCardView>
 
@@ -135,7 +152,7 @@
         android:paddingVertical="12dp"
         app:cardCornerRadius="24dp"
         android:backgroundTint="@android:color/transparent"
-        app:strokeColor="@color/lightGray"
+        app:strokeColor="@color/textPrimary"
         app:strokeWidth="1dp"
         android:clickable="true"
         >

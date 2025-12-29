@@ -233,7 +233,7 @@ public class Firebase_Helper {
                             String author = document.getString("author");
                             String year = document.getString("year");
 
-                            Book b = new Book(name, author, isbn, year);
+                            Book b = new Book(name, author, "ISBN: " + isbn, "Pub. Year: " + year);
 
                             books.add(b);
                         }
