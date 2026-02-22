@@ -1,4 +1,4 @@
-# Firebase Book Manager
+# Shelf
 
 An Android mobile application built to demonstrate seamless integration with Firebase. This project features a secure user authentication system and a fully functional CRUD (Create, Read, Update, Delete) interface for managing a personal library of books.
 
